@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Для тебя ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -13,53 +14,188 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%);
-            font-family: 'Arial', sans-serif;
+            /* Нежный романтичный фон */
+            background: radial-gradient(circle, #ffd1ff 0%, #fae8ff 50%, #fbc2eb 100%);
+            font-family: 'Nunito', sans-serif;
             overflow: hidden;
+            position: relative;
         }
+
         h1 {
-            color: #d6336c;
-            font-size: 2.5rem;
+            color: #d81b60;
+            font-family: 'Caveat', cursive;
+            font-size: 4rem;
             text-align: center;
             margin-bottom: 2rem;
             padding: 0 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            text-shadow: 2px 2px 8px rgba(216, 27, 96, 0.3);
+            z-index: 10;
         }
+
         .buttons-container {
             position: relative;
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 20px;
             width: 100%;
             height: 60px;
+            z-index: 10;
         }
+
         button {
             padding: 15px 40px;
             font-size: 1.5rem;
-            font-weight: bold;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 800;
             border: none;
             border-radius: 50px;
             cursor: pointer;
-            transition: transform 0.2s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }
+
         #btn-yes {
-            background-color: #ff4b82;
+            background: linear-gradient(45deg, #ff4b82, #ff758c);
             color: white;
-            z-index: 2;
+            z-index: 15;
         }
+
+        #btn-yes:active {
+            transform: scale(0.95);
+        }
+
         #btn-no {
-            background-color: #ffffff;
-            color: #d6336c;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #ff4b82;
             position: absolute;
             right: calc(50% - 130px);
             transition: top 0.2s ease, left 0.2s ease;
         }
+
         #success-message {
             display: none;
-            font-size: 2rem;
-            color: #d6336c;
+            font-family: 'Caveat', cursive;
+            font-size: 3.5rem;
+            color: #d81b60;
             text-align: center;
-            font-weight: bold;
+            line-height: 1.2;
             padding: 0 20px;
-            animation: fadeIn 1s
+            animation: fadeIn 1.5s;
+            z-index: 10;
+            text-shadow: 2px 2px 8px rgba(216, 27, 96, 0.3);
+        }
+
+        .gif-container {
+            display: none;
+            margin-top: 20px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 25px rgba(216, 27, 96, 0.4);
+            z-index: 10;
+            border: 4px solid white;
+        }
+
+        /* Класс для летящих сердечек */
+        .heart {
+            position: absolute;
+            bottom: -20px;
+            font-size: 1.5rem;
+            color: rgba(255, 75, 130, 0.6);
+            animation: floatUp 5s linear infinite;
+            z-index: 1;
+            pointer-events: none; /* Чтобы они не мешали нажимать кнопки */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-120vh) scale(1.5) rotate(360deg); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <h1 id="question">Ты меня любишь? 🥺</h1>
+    
+    <div class="buttons-container" id="btn-container">
+        <button id="btn-yes">Да!</button>
+        <button id="btn-no">Нет</button>
+    </div>
+
+    <div id="success-message">Я тоже тебя очень сильно люблю! ❤️</div>
+    <div class="gif-container" id="gif-container">
+        <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExc29teWZ1ZXByM2U1Y2J4YWp5bWRqa3d0MDI1MzhyaXN3dHNqYXYwaCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/Vz58J8shFW6BvqnYTm/giphy.gif" alt="Love Hug" width="280">
+    </div>
+
+    <script>
+        // --- Создание летящих сердечек ---
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.classList.add('heart');
+            // Массив с разными сердечками для разнообразия
+            const hearts = ['❤️', '💖', '💕', '🌸', '✨'];
+            heart.innerHTML = hearts[Math.floor(Math.random() * hearts.length)];
+            
+            // Случайная позиция по ширине экрана
+            heart.style.left = Math.random() * 100 + 'vw';
+            
+            // Случайный размер и скорость
+            heart.style.animationDuration = Math.random() * 3 + 4 + 's'; // от 4 до 7 секунд
+            heart.style.fontSize = Math.random() * 20 + 15 + 'px';
+            
+            document.body.appendChild(heart);
+            
+            // Удаляем сердечко, когда оно улетает, чтобы не перегружать телефон
+            setTimeout(() => {
+                heart.remove();
+            }, 7000);
+        }
+
+        // Запускаем появление сердечек каждые 300 миллисекунд
+        setInterval(createHeart, 300);
+
+        // --- Логика кнопок ---
+        const btnNo = document.getElementById('btn-no');
+        const btnYes = document.getElementById('btn-yes');
+        const question = document.getElementById('question');
+        const btnContainer = document.getElementById('btn-container');
+        const successMessage = document.getElementById('success-message');
+        const gifContainer = document.getElementById('gif-container');
+
+        function runAway() {
+            btnNo.style.position = 'fixed';
+            
+            // Учитываем размеры экрана, чтобы кнопка не улетала за края
+            const maxX = window.innerWidth - btnNo.offsetWidth - 20;
+            const maxY = window.innerHeight - btnNo.offsetHeight - 20;
+            
+            const randomX = Math.max(20, Math.floor(Math.random() * maxX));
+            const randomY = Math.max(20, Math.floor(Math.random() * maxY));
+
+            btnNo.style.left = `${randomX}px`;
+            btnNo.style.top = `${randomY}px`;
+        }
+
+        btnNo.addEventListener('mouseover', runAway);
+        btnNo.addEventListener('touchstart', (e) => {
+            e.preventDefault(); 
+            runAway();
+        });
+
+        btnYes.addEventListener('click', () => {
+            question.style.display = 'none';
+            btnContainer.style.display = 'none';
+            successMessage.style.display = 'block';
+            gifContainer.style.display = 'block';
+            
+            // Ускоряем появление сердечек от радости!
+            setInterval(createHeart, 100);
+        });
+    </script>
+
+</body>
+</html>
